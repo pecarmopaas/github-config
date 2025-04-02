@@ -7,7 +7,7 @@ variable "team_description" {
 }
 
 variable "team_privacy" {
-  type = string
+  type    = string
   default = "closed"
 }
 
@@ -17,6 +17,15 @@ variable "parent_team_id" {
 }
 
 variable "team_members" {
-  type = list(string)
+  type    = list(string)
   default = []
+}
+
+variable "team_maintainers" {
+  type    = list(string)
+  default = []
+}
+
+variable "repo" {
+  type = map(string)
 }

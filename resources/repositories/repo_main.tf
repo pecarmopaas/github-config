@@ -25,6 +25,25 @@ module "users-service" {
   ]
 }
 
+module "items-service" {
+  source = "../../modules/repository"
+  repo_config = {
+    repo_name        = "items-service"
+    repo_description = ""
+  }
+  branch_protection_config = [
+    {
+      branch_name                     = "main"
+      dismiss_stale_reviews           = true
+      require_code_owner_reviews      = false
+      require_last_push_approval      = true
+      required_approving_review_count = 1
+      status_checks_strict            = false
+      restrictions_users              = []
+    }
+  ]
+}
+
 module "infra" {
   source = "../../modules/repository"
   repo_config = {
@@ -32,3 +51,4 @@ module "infra" {
     repo_description = ""
   }
 }
+
