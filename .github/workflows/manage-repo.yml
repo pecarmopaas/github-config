@@ -42,22 +42,32 @@ jobs:
                                    "${{ github.event.inputs.repo_description }}" \
                                    "${{ github.event.inputs.private }}"
 
-      - name: Commit changes
-        run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add resources/repositories/repo_main.tf
-          git commit -m "Automated TF update: ${{ github.event.inputs.option }} repository ${{ github.event.inputs.repo_name }}" || echo "No changes to commit"
-          git push
-
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v3
 
       - name: Initialize Terraform
         run: terraform init
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Validate Terraform
         run: terraform validate
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Apply Terraform
         run: terraform apply -auto-approve
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Commit changes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add resources/repositories/repo_main.tf
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Automated TF update: ${{ github.event.inputs.option }} repository ${{ github.event.inputs.repo_name }}"
+            git push
+          fi
