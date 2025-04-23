@@ -8,7 +8,19 @@ resource "github_repository" "repo" {
   vulnerability_alerts = var.repo_config.vulnerability_alerts
 }
 
-resource "github_branch_protection_v3" "branch_protection" {
+resource "github_branch_protection_v3" "default_protection_rule" {
+  repository = github_repository.repo.name
+  branch     = "main"
+
+  required_pull_request_reviews {
+    dismiss_stale_reviews           = false
+    require_code_owner_reviews      = false
+    require_last_push_approval      = true
+    required_approving_review_count = 1
+  }
+}
+
+resource "github_branch_protection_v3" "custom_protection_rules" {
   for_each = { for rule in var.branch_protection_config : rule.branch_name => rule }
 
   repository = github_repository.repo.name
