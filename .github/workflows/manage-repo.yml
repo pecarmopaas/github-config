@@ -54,13 +54,10 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Initialize Terraform
-        working-directory: ./envs/dev
         run: terraform init
 
       - name: Validate Terraform
-        working-directory: ./envs/dev
         run: terraform validate
 
       - name: Apply Terraform
-        working-directory: ./envs/dev
         run: terraform apply -auto-approve
