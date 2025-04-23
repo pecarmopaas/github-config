@@ -1,0 +1,64 @@
+name: Manage Repository
+
+on:
+  workflow_dispatch:
+    inputs:
+      option:
+        description: 'Operation'
+        required: true
+        type: choice
+        options:
+          - 'Create'
+          - 'Update'
+          - 'Delete'
+      repo_name:
+        description: 'Repository Name'
+        required: true
+      repo_description:
+        description: 'Repository Description'
+        required: true
+      private:
+        description: 'Private Repository'
+        required: true
+        type: boolean
+
+
+jobs:
+  manage_repo_tf:
+    name: Manage Repository Terraform
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Execute manage-repo script
+        run: |
+          chmod +x ./scripts/manage-repo.sh
+          ./scripts/manage-repo.sh "${{ github.event.inputs.option }}" \
+                                   "${{ github.event.inputs.repo_name }}" \
+                                   "${{ github.event.inputs.repo_description }}" \
+                                   "${{ github.event.inputs.private }}"
+
+      - name: Commit changes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add resources/repositories/repo_main.tf
+          git commit -m "Automated TF update: ${{ github.event.inputs.option }} repository ${{ github.event.inputs.repo_name }}" || echo "No changes to commit"
+          git push
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Initialize Terraform
+        working-directory: ./envs/dev
+        run: terraform init
+
+      - name: Validate Terraform
+        working-directory: ./envs/dev
+        run: terraform validate
+
+      - name: Apply Terraform
+        working-directory: ./envs/dev
+        run: terraform apply -auto-approve
