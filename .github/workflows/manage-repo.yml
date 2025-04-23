@@ -27,6 +27,8 @@ jobs:
   manage_repo_tf:
     name: Manage Repository Terraform
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout code
