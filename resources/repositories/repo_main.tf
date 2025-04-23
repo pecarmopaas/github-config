@@ -29,3 +29,12 @@ module "infra" {
     repo_description = ""
   }
 }
+
+module "test-repo" {
+  source = "../../modules/repository"
+  repo_config = {
+    repo_name        = "test-repo"
+    repo_description = "test-repo-desc"
+    repo_visibility  = "private"
+  }
+}
