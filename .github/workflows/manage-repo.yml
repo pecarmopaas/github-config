@@ -34,8 +34,6 @@ jobs:
   manage_repo_tf:
     name: Manage Repository Terraform
     runs-on: ubuntu-latest
-    permissions: 
-      write-all
 
     steps:
       - name: Checkout code
@@ -61,16 +59,16 @@ jobs:
       - name: Plan Terraform
         run: terraform plan -out=tfplan
 
-      # - name: Apply Terraform
-      #   run: terraform apply -auto-approve
+      - name: Apply Terraform
+        run: terraform apply -auto-approve
 
-      # - name: Commit changes
-      #   run: |
-      #     git config --global user.name 'github-actions[bot]'
-      #     git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-      #     git add resources/repositories/repo_main.tf
-      #     if git diff --staged --quiet; then
-      #       echo "No changes to commit"
-      #     else
-      #       git commit -m "Automated TF update: ${{ github.event.inputs.option }} repository ${{ github.event.inputs.repo_name }}"
-      #       git push
+      - name: Commit changes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add resources/repositories/repo_main.tf
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Automated TF update: ${{ github.event.inputs.option }} repository ${{ github.event.inputs.repo_name }}"
+            git push
