@@ -36,6 +36,11 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      repositories: write
+      security-events: read
+      members: read
+      teams: write
+      
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
