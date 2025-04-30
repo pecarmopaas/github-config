@@ -64,18 +64,23 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Apply Terraform
-        run: terraform apply -auto-approve
+      - name: Plan Terraform
+        run: terraform plan -out=tfplan
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Commit changes
-        run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add resources/repositories/repo_main.tf
-          if git diff --staged --quiet; then
-            echo "No changes to commit"
-          else
-            git commit -m "Automated TF update: ${{ github.event.inputs.option }} repository ${{ github.event.inputs.repo_name }}"
-            git push
+      # - name: Apply Terraform
+      #   run: terraform apply -auto-approve
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # - name: Commit changes
+      #   run: |
+      #     git config --global user.name 'github-actions[bot]'
+      #     git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+      #     git add resources/repositories/repo_main.tf
+      #     if git diff --staged --quiet; then
+      #       echo "No changes to commit"
+      #     else
+      #       git commit -m "Automated TF update: ${{ github.event.inputs.option }} repository ${{ github.event.inputs.repo_name }}"
+      #       git push
