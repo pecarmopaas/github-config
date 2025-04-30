@@ -4,7 +4,7 @@ set -e
 OPTION="$1"
 REPO_NAME="$2"
 REPO_DESCRIPTION="$3"
-PRIVATE_INPUT="$4" 
+PRIVATE_INPUT="$4"
 
 TF_FILE="resources/repositories/repo_main.tf"
 
@@ -34,7 +34,7 @@ EOF
 
 update_repo() {
   echo "Updating repository: $REPO_NAME"
-  
+
   awk -v name="$REPO_NAME" -v desc="$REPO_DESCRIPTION" -v vis="$VISIBILITY" '
   BEGIN { module_found=0; in_module=0 }
   /^module "'"$REPO_NAME"'" \{/ { module_found=1; in_module=1 }
@@ -50,17 +50,14 @@ update_repo() {
 
 delete_repo() {
   echo "Deleting repository: $REPO_NAME"
-  # Delete the module block
   sed -i '/^module "'"$REPO_NAME"'" {/,/^\}$/d' "$TF_FILE"
 
-  # Remove trailing blank lines from the end of the file
   sed -i -e :a -e '/^\n*$/{$d;N;ba' -e '}' "$TF_FILE"
 }
 
 
 case "$OPTION" in
   Create)
-    
     if grep -q "^module \"$REPO_NAME\" {" "$TF_FILE"; then
       echo "Error: Module '$REPO_NAME' already exists."
       exit 1
@@ -77,7 +74,7 @@ case "$OPTION" in
   Delete)
     if ! grep -q "^module \"$REPO_NAME\" {" "$TF_FILE"; then
       echo "Error: Module '$REPO_NAME' not found for deletion."
-      
+
       exit 1
     fi
     delete_repo
