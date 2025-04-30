@@ -65,7 +65,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Apply Terraform
-        run: terraform apply -auto-approve -var="github_token=${{ secrets.GITHUB_TOKEN }}"
+        run: terraform apply -auto-approve
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
