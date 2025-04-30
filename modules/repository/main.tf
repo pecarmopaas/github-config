@@ -1,6 +1,7 @@
 resource "github_repository" "repo" {
   name                 = var.repo_config.repo_name
-  visibility           = var.repo_config.repo_visibility
+  #visibility           = var.repo_config.repo_visibility
+  visibility           = "public" #Must be public or require github pro for branch protection
   description          = var.repo_config.repo_description
   has_downloads        = var.repo_config.has_downloads
   has_issues           = var.repo_config.has_issues
