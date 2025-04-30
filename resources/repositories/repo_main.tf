@@ -4,6 +4,7 @@ module "github_config" {
     repo_name        = "github-config"
     repo_description = "This repository contains the configuration for the GitHub organization."
   }
+  apply_default_branch_protection_rules = false
 }
 
 module "users-service" {

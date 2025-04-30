@@ -1,3 +1,8 @@
+variable "apply_default_branch_protection_rules" {
+  type = bool
+  default = true
+}
+
 variable "repo_config" {
   type = object({
     repo_name            = string

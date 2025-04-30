@@ -27,6 +27,8 @@ env:
   ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
   ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
   ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  GITHUB_OWNER: pecarmopaas
 
 jobs:
   manage_repo_tf:
@@ -34,11 +36,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      GITHUB_OWNER: pecarmopaas
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -57,22 +54,15 @@ jobs:
       - name: Initialize Terraform
         run: terraform init
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+        
       - name: Validate Terraform
-        run: terraform validate
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: terraform validate          
 
       - name: Plan Terraform
         run: terraform plan -out=tfplan
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # - name: Apply Terraform
       #   run: terraform apply -auto-approve
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # - name: Commit changes
       #   run: |

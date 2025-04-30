@@ -9,6 +9,7 @@ resource "github_repository" "repo" {
 }
 
 resource "github_branch_protection_v3" "default_protection_rule" {
+  count      = var.apply_default_branch_protection_rules ? 1 : 0
   repository = github_repository.repo.name
   branch     = "main"
 
