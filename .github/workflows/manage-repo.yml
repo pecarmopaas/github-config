@@ -28,13 +28,16 @@ env:
   ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
   ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
 
-
 jobs:
   manage_repo_tf:
     name: Manage Repository Terraform
     runs-on: ubuntu-latest
     permissions:
       contents: write
+
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_OWNER: pecarmopaas
 
     steps:
       - name: Checkout code
@@ -62,7 +65,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Apply Terraform
-        run: terraform apply -auto-approve
+        run: terraform apply -auto-approve -var="github_token=${{ secrets.GITHUB_TOKEN }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -76,4 +79,3 @@ jobs:
           else
             git commit -m "Automated TF update: ${{ github.event.inputs.option }} repository ${{ github.event.inputs.repo_name }}"
             git push
-          fi
