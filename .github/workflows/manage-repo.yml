@@ -35,10 +35,8 @@ jobs:
     name: Manage Repository Terraform
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-      repositories: write
+      contents: write      
       security-events: read
-      members: read
       teams: write
       
     steps:
