@@ -51,10 +51,10 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Initialize Terraform
-        run: terraform init        
-        
+        run: terraform init
+
       - name: Validate Terraform
-        run: terraform validate          
+        run: terraform validate
 
       - name: Plan Terraform
         run: terraform plan -out=tfplan
@@ -72,3 +72,4 @@ jobs:
           else
             git commit -m "Automated TF update: ${{ github.event.inputs.option }} repository ${{ github.event.inputs.repo_name }}"
             git push
+          fi
