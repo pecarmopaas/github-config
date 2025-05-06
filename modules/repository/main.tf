@@ -1,5 +1,5 @@
 resource "github_repository" "repo" {
-  name                 = var.repo_config.repo_name
+  name = var.repo_config.repo_name
   #visibility           = var.repo_config.repo_visibility
   visibility           = "public" #Must be public or require github pro for branch protection
   description          = var.repo_config.repo_description
@@ -42,4 +42,11 @@ resource "github_branch_protection_v3" "custom_protection_rules" {
   restrictions {
     users = each.value.restrictions_users
   }
+
+  depends_on = [github_branch.default_branch]
+}
+
+resource "github_branch" "default_branch" {
+  repository = github_repository.repo.name
+  branch     = "main"
 }
