@@ -9,6 +9,7 @@ resource "github_repository" "repo" {
   vulnerability_alerts = var.repo_config.vulnerability_alerts
 }
 
+# commented because can't test the required approvers protection rule as a single dev ):
 # resource "github_branch_protection_v3" "default_protection_rule" {
 #   count      = var.apply_default_branch_protection_rules ? 1 : 0
 #   repository = github_repository.repo.name
@@ -44,7 +45,25 @@ resource "github_branch_protection_v3" "custom_protection_rules" {
   }
 }
 
-# resource "github_branch" "default_branch" {
-#   repository = github_repository.repo.name
-#   branch     = "main"
-# }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+terraform {
+  required_providers {
+    github = {
+      source  = "integrations/github"
+      version = "~> 5.0"
+    }
+  }
+}

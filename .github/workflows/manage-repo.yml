@@ -16,7 +16,7 @@ on:
         required: true
       repo_description:
         description: 'Repository Description'
-        required: true
+        required: false
       private:
         description: 'Private Repository'
         required: true
