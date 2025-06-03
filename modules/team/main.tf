@@ -23,3 +23,5 @@ resource "github_team_repository" "team_repo" {
   repository = each.key
   permission = each.value
 }
+
+
